@@ -33,8 +33,6 @@ module tt_um_sushi_demo (
   parameter V_SYNC_START    = V_DISPLAY + V_BOTTOM;
   parameter V_SYNC_END      = V_DISPLAY + V_BOTTOM + V_SYNC - 1;
   parameter V_MAX           = V_DISPLAY + V_TOP + V_BOTTOM + V_SYNC - 1;
-  //frame
-  parameter FRAME_PERIOD      = 10; //5 bit - 2^4 = 32 max
   //sprite position
   parameter SPRITE_X_START = 100;
   parameter SPRITE_Y_START = 100;

@@ -18,7 +18,7 @@ def png_to_2bit_rgb(png_filepath, output_filepath):
         pixels = np.array(img)
 
         with open(output_filepath, "w") as f:
-            f.write("\n\nreg [5:0] " + png_name +" [18:0] [32:0]; //33x19 sprite [y][x]\n\n")
+            f.write("\n\nreg [1:0] " + png_name +" [18:0] [32:0]; //33x19 sprite [y][x]\n\n")
             f.write("always @(*) begin\n") 
             for y in range(height):
                 for x in range(width):
@@ -30,7 +30,20 @@ def png_to_2bit_rgb(png_filepath, output_filepath):
                     b_2bit = (b // 85)
 
                     # Output the 2-bit values.  You can adjust the format here
-                    f.write(png_name + f"[{y}][{x}] = 6'b{r_2bit:02b}{g_2bit:02b}{b_2bit:02b};\n")
+                    color = f"{r_2bit:02b}{g_2bit:02b}{b_2bit:02b}"
+                    if color == "001100":
+                        color_2bit = 0 #background color
+
+                    elif color == "000000":
+                        color_2bit = 1 #black border color
+
+                    elif color == "111111":
+                        color_2bit = 2 #white color
+
+                    elif color == "101010":
+                        color_2bit = 3 #grey color
+
+                    f.write(png_name + f"[{y}][{x}] = 2'b{color_2bit:02b};\n")
             f.write("end\n")
 
 
@@ -43,7 +56,7 @@ def png_to_2bit_rgb(png_filepath, output_filepath):
 
 # Example usage:
 for png_name in ["sushi_run_0", "sushi_run_1"]:
-    png_file = "../assets/" + png_name + ".png"  # Replace with your PNG file path
-    output_file = "../assets/" + png_name + ".txt"  # Replace with desired output file path
+    png_file = "assets/" + png_name + ".png"  # Replace with your PNG file path
+    output_file = "assets/" + png_name + ".txt"  # Replace with desired output file path
     png_to_2bit_rgb(png_file, output_file)
     print(f"PNG converted to 2-bit RGB data and saved to {output_file}")
